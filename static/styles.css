@@ -1,0 +1,12 @@
+.container-recipientes {
+    display: flex;
+    align-items: end;
+    gap: 50px
+}
+
+.recipiente {
+    width: 150px;
+    height: 300px;
+    border: 2px solid gray;
+    border-top: none;
+}

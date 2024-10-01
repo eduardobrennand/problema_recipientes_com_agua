@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Water Jug Problem</title>
+    <style>
+        button { margin: 10px; padding: 10px; }
+        .jug-action { margin: 5px; }
+    </style>
+</head>
+<body>
+    <h1>Water Jug Problem</h1>
+    <div>
+        <h2>Definição do Problema</h2>
+        <form action="processar_problema" type="GET">
+            <label for="capacidade_x">Capacidade do Recipiente X:</label>
+            <input type="number" name="capacidade_x" id="capacidade_x">
+            <label for="capacidade_y">Capacidade do Recipiente Y:</label>
+            <input type="number" name="capacidade_y" id="capacidade_y">
+            <label for="estado_final_x">Estado Final do Recipiente X:</label>
+            <input type="number" name="estado_final_x" id="estado_final_x">
+            <label for="estado_final_y">Estado Final do Recipiente Y:</label>
+            <input type="number" name="estado_final_y" id="estado_final_y">
+            <input type="submit">Processar</input>
+        </form>
+    </div>
+    <script>
+        async function solve(capacidade_x, capacidade_y, estado_final_x, estado_final_y) {
+            const response = await fetch('/processar_problema', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ algorithm })
+            });
+            const data = await response.json();
+            document.getElementById('solution').innerText = data.solution;
+        }
+    </script>
+</body>
+</html>

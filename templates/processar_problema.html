@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Water Jug Solution</title>
+    <link rel="stylesheet" type="text/css" href="static/styles.css">
+</head>
+<body>
+    <h1>Water Jug Problem</h1>
+    <div>
+        <h2>Especificações do Problema</h2>
+        <h3>Capacidade Recipiente X: {{ capacidade_x }} litros</h3>
+        <h3>Capacidade Recipiente Y: {{ capacidade_y }} litros</h3>
+        <h3>Estado Final: {{ estado_final }} </h3>
+    </div>
+
+    <div>
+        <h2>Selecione o Algoritmo para resolver o problema:</h2>
+        <button onclick="solucionar_problema(algoritmo=1, capacidade_maxima={{ capacidade_maxima | tojson }}, estado_final={{ estado_final | tojson }})">Busca em Largura</button>
+        <button onclick="solucionar_problema(algoritmo=2, capacidade_maxima={{ capacidade_maxima | tojson }}, estado_final={{ estado_final | tojson }})">Busca em Profundidade</button>
+        <button onclick="solucionar_problema(algoritmo=3, capacidade_maxima={{ capacidade_maxima | tojson }}, estado_final={{ estado_final | tojson }})">Busca em Profundidade Limitada</button>
+        <button onclick="solucionar_problema(algoritmo=4, capacidade_maxima={{ capacidade_maxima | tojson }}, estado_final={{ estado_final | tojson }})">Busca em Profundidade Limitada Iterativa</button>
+    </div>
+
+    <div id="solucao">
+        <h3>Passo a Passo:</h3>
+        <ul id="passos">
+            <!-- A lista de passos será inserida aqui -->
+        </ul>
+
+        <div id="recipientes" class="container-recipientes">
+        </div>
+    </div>
+    <script>
+        function calcular_porcentagem(estado_atual, capacidade_maxima) {
+            return (estado_atual / capacidade_maxima) * 100;
+        }
+
+        async function solucionar_problema(algoritmo, capacidade_maxima, estado_final) {
+            const response = await fetch('/solucionar_problema', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    algoritmo: algoritmo,
+                    capacidade_maxima: capacidade_maxima,
+                    estado_final: estado_final
+                })
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                const acoes = data.lista_acoes;
+
+                // Limpar a lista de passos anterior, se houver
+                const recipientes = document.getElementById('recipientes');
+                const passosElement = document.getElementById('passos');
+                passosElement.innerHTML = '';
+                recipientes.innerHTML = '';
+
+                // Cria o recipiente X
+                const capacidade_maxima_x = capacidade_maxima[0];
+                const capacidade_maxima_x_px = 100 * capacidade_maxima_x;
+                const recipiente_x = document.createElement('div');
+                recipiente_x.id = 'recipiente_x';
+                recipiente_x.style.width = '150px';
+                recipiente_x.style.border = '2px solid gray';
+                recipiente_x.style.borderTop = 'none';
+                recipiente_x.style.height = `${capacidade_maxima_x_px}px`
+
+                // Cria o recipiente Y
+                const capacidade_maxima_y = capacidade_maxima[1];
+                const capacidade_maxima_y_px = 100 * capacidade_maxima_y;
+                const recipiente_y = document.createElement('div');
+                recipiente_y.id = 'recipiente_y';
+                recipiente_y.style.width = '150px';
+                recipiente_y.style.border = '2px solid gray';
+                recipiente_y.style.borderTop = 'none';
+                recipiente_y.style.height = `${capacidade_maxima_y_px}px`
+
+                recipientes.appendChild(recipiente_x);
+                recipientes.appendChild(recipiente_y);
+                
+                let estado_atual_x = 0;
+                let estado_atual_y = 0;
+                // Adicionar cada passo à lista
+                for (i=0; i <= acoes.length; i++) {
+                    const li = document.createElement('li');
+                    // Logica para estilizar os recipientes
+                    setTimeout((acao, estado_atual, capacidade_maxima, i) => { 
+                        if (acao == 'Enche recipiente X') {
+                            estado_atual_x = capacidade_maxima[0];
+                            let porcentagem_x = calcular_porcentagem(estado_atual_x, capacidade_maxima[0]);
+                            recipiente_x.style.backgroundImage = `-webkit-linear-gradient(bottom, #ADD8E6 ${porcentagem_x}%, transparent 0%)`;
+                        }
+
+                        if (acao == 'Enche recipiente Y') {
+                            estado_atual_y = capacidade_maxima[1];
+                            let porcentagem_y = calcular_porcentagem(estado_atual_y, capacidade_maxima[1]);
+                            recipiente_y.style.backgroundImage = `-webkit-linear-gradient(bottom, #ADD8E6 ${porcentagem_y}%, transparent 0%)`;
+                        }
+
+                        if (acao == 'Esvazia recipiente X') {
+                            estado_atual_x = 0;
+                            recipiente_x.style.backgroundImage = 'none';
+                        }
+
+                        if (acao == 'Esvazia recipiente Y') {
+                            estado_atual_y = 0;
+                            recipiente_y.style.backgroundImage = 'none';
+                        }
+
+                        if (acao == 'Transfere do recipiente Y para o recipiente X') {
+                            // Transfere a quantidade de Y para X
+
+                            let porcentagem_x = calcular_porcentagem(estado_atual[0], capacidade_maxima[0]);
+                            let porcentagem_y = calcular_porcentagem(estado_atual[1], capacidade_maxima[1]);
+
+                            recipiente_x.style.backgroundImage = `-webkit-linear-gradient(bottom, #ADD8E6 ${porcentagem_x}%, transparent 0%)`;
+                            recipiente_y.style.backgroundImage = `-webkit-linear-gradient(bottom, #ADD8E6 ${porcentagem_y}%, transparent 0%)`;
+                        }
+
+                        li.innerText = `${i + 1}. ${acao} - Estado Atual: ${estado_atual}`;
+                        passosElement.appendChild(li);
+
+                    }, 5000 * (i + 1), acoes[i].acao, acoes[i].estado_atual, capacidade_maxima, i);  // Atraso crescente para cada passo
+                };
+            } else {
+                document.getElementById('solucao').innerText = 'Erro ao obter a solução';
+            }
+        }
+    </script>
+</body>
+</html>
