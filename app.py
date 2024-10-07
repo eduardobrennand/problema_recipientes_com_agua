@@ -12,8 +12,9 @@ def busca_em_largura(problema):
     while solucao.parent is not None:
         acoes_ate_objetivo.insert(0, (solucao.action, solucao.state))
         solucao = solucao.parent
-    
+
     return acoes_ate_objetivo
+
 
 def busca_em_profundidade(problema):
     solucao = search.depth_first_graph_search(problema)
@@ -22,8 +23,9 @@ def busca_em_profundidade(problema):
     while solucao.parent is not None:
         acoes_ate_objetivo.insert(0, (solucao.action, solucao.state))
         solucao = solucao.parent
-    
+
     return acoes_ate_objetivo
+
 
 def busca_em_profundidade_limitada(problema):
     solucao = search.depth_limited_search(problema)
@@ -32,8 +34,9 @@ def busca_em_profundidade_limitada(problema):
     while solucao.parent is not None:
         acoes_ate_objetivo.insert(0, (solucao.action, solucao.state))
         solucao = solucao.parent
-    
+
     return acoes_ate_objetivo
+
 
 def busca_em_profundidade_limitada_iterativa(problema):
     solucao = search.iterative_deepening_search(problema)
@@ -42,8 +45,40 @@ def busca_em_profundidade_limitada_iterativa(problema):
     while solucao.parent is not None:
         acoes_ate_objetivo.insert(0, (solucao.action, solucao.state))
         solucao = solucao.parent
-    
+
     return acoes_ate_objetivo
+
+
+def heuristica(problema):
+    # Considera a diferença entre a quantidade de água no recipiente Y e o
+    # objetivo (2 litros)
+    estado = problema.state
+    recipiente_x, recipiente_y = estado
+
+    return recipiente_x - 7
+
+
+def busca_gulosa_por_heuristica(problema):
+    solucao = search.greedy_best_first_graph_search(problema, f=heuristica)
+    acoes_ate_objetivo = []
+
+    while solucao.parent is not None:
+        acoes_ate_objetivo.insert(0, (solucao.action, solucao.state))
+        solucao = solucao.parent
+
+    return acoes_ate_objetivo
+
+
+def busca_a_estrela(problema):
+    solucao = search.astar_search(problema, h=heuristica)
+    acoes_ate_objetivo = []
+
+    while solucao.parent is not None:
+        acoes_ate_objetivo.insert(0, (solucao.action, solucao.state))
+        solucao = solucao.parent
+
+    return acoes_ate_objetivo
+
 
 @app.route('/')
 def index():
@@ -68,6 +103,7 @@ def processar_problema():
                            estado_final_y=estado_final_y,
                            estado_final=estado_final)
 
+
 @app.route('/solucionar_problema', methods=['POST'])
 def solucionar_problema():
     data = request.get_json()
@@ -75,7 +111,8 @@ def solucionar_problema():
     capacidade_maxima = tuple(data['capacidade_maxima'])
     estado_final = tuple(data['estado_final'])
 
-    problema = WaterJugProblem(initial=(0, 0), goal=estado_final, capacities=capacidade_maxima)
+    problema = WaterJugProblem(
+        initial=(0, 0), goal=estado_final, capacities=capacidade_maxima)
 
     if algoritmo == 1:
         solucao = busca_em_largura(problema)
@@ -83,9 +120,13 @@ def solucionar_problema():
         solucao = busca_em_profundidade(problema)
     elif algoritmo == 3:
         solucao = busca_em_profundidade_limitada(problema)
-    else:
+    elif algoritmo == 4:
         solucao = busca_em_profundidade_limitada_iterativa(problema)
-    
+    elif algoritmo == 5:
+        solucao = busca_gulosa_por_heuristica(problema)
+    else:
+        solucao = busca_a_estrela(problema)
+
     lista_acoes = []
     for etapas in solucao:
         acoes = {}
@@ -94,6 +135,7 @@ def solucionar_problema():
         lista_acoes.append(acoes)
 
     return jsonify({'lista_acoes': lista_acoes})
+
 
 if __name__ == '__main__':
     app.run(debug=True)

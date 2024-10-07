@@ -3,33 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Water Jug Solution</title>
+    <title>Solução do Problema das Jarras de Água</title>
     <link rel="stylesheet" type="text/css" href="static/styles.css">
 </head>
 <body>
-    <h1>Water Jug Problem</h1>
-    <div>
-        <h2>Especificações do Problema</h2>
-        <h3>Capacidade Recipiente X: {{ capacidade_x }} litros</h3>
-        <h3>Capacidade Recipiente Y: {{ capacidade_y }} litros</h3>
-        <h3>Estado Final: {{ estado_final }} </h3>
-    </div>
+    <div class="container-geral">
+        <h1>Solução do Problema das Jarras de Água</h1>
+        <div class="container-especificacao-problema">
+            <h2>Especificações do Problema</h2>
+            <h3>Capacidade Recipiente X: {{ capacidade_x }} litros</h3>
+            <h3>Capacidade Recipiente Y: {{ capacidade_y }} litros</h3>
+            <h3>Estado Final: {{ estado_final }} </h3>
+        </div>
 
-    <div>
-        <h2>Selecione o Algoritmo para resolver o problema:</h2>
-        <button onclick="solucionar_problema(algoritmo=1, capacidade_maxima={{ capacidade_maxima | tojson }}, estado_final={{ estado_final | tojson }})">Busca em Largura</button>
-        <button onclick="solucionar_problema(algoritmo=2, capacidade_maxima={{ capacidade_maxima | tojson }}, estado_final={{ estado_final | tojson }})">Busca em Profundidade</button>
-        <button onclick="solucionar_problema(algoritmo=3, capacidade_maxima={{ capacidade_maxima | tojson }}, estado_final={{ estado_final | tojson }})">Busca em Profundidade Limitada</button>
-        <button onclick="solucionar_problema(algoritmo=4, capacidade_maxima={{ capacidade_maxima | tojson }}, estado_final={{ estado_final | tojson }})">Busca em Profundidade Limitada Iterativa</button>
-    </div>
+        <div class="container-solucao">
+            <h2>Selecione o Algoritmo para resolver o problema:</h2>
+            <h3>Algoritmos de Busca Não Informada:</h3>
+            <div class="container-solucao-busca-nao-informada">
+                <button class="botao-solucao" onclick="solucionar_problema(algoritmo=1, capacidade_maxima={{ capacidade_maxima | tojson }}, estado_final={{ estado_final | tojson }})">Busca em Largura</button>
+                <button class="botao-solucao" onclick="solucionar_problema(algoritmo=2, capacidade_maxima={{ capacidade_maxima | tojson }}, estado_final={{ estado_final | tojson }})">Busca em Profundidade</button>
+                <button class="botao-solucao" onclick="solucionar_problema(algoritmo=3, capacidade_maxima={{ capacidade_maxima | tojson }}, estado_final={{ estado_final | tojson }})">Busca em Profundidade Limitada</button>
+                <button class="botao-solucao" onclick="solucionar_problema(algoritmo=4, capacidade_maxima={{ capacidade_maxima | tojson }}, estado_final={{ estado_final | tojson }})">Busca em Profundidade Limitada Iterativa</button>
+            </div>
+            <h3>Algoritmos de Busca Informada:</h3>
+            <div class="container-solucao-busca-informada">
+                <button class="botao-solucao" onclick="solucionar_problema(algoritmo=1, capacidade_maxima={{ capacidade_maxima | tojson }}, estado_final={{ estado_final | tojson }})">Busca Gulosa por Heurística</button>
+                <button class="botao-solucao" onclick="solucionar_problema(algoritmo=2, capacidade_maxima={{ capacidade_maxima | tojson }}, estado_final={{ estado_final | tojson }})">Busca A*</button>
+            </div>
 
-    <div id="solucao">
-        <h3>Passo a Passo:</h3>
-        <ul id="passos">
-            <!-- A lista de passos será inserida aqui -->
-        </ul>
+            <div id="solucao">
+                <h3>Passo a Passo:</h3>
+                <ul id="passos">
+                    <!-- A lista de passos será inserida aqui -->
+                </ul>
 
-        <div id="recipientes" class="container-recipientes">
+                <div id="recipientes" class="container-recipientes">
+                </div>
+            </div>
         </div>
     </div>
     <script>
@@ -66,7 +76,7 @@
                 const recipiente_x = document.createElement('div');
                 recipiente_x.id = 'recipiente_x';
                 recipiente_x.style.width = '150px';
-                recipiente_x.style.border = '2px solid gray';
+                recipiente_x.style.border = '3px solid #000000';
                 recipiente_x.style.borderTop = 'none';
                 recipiente_x.style.height = `${capacidade_maxima_x_px}px`
 
@@ -76,7 +86,7 @@
                 const recipiente_y = document.createElement('div');
                 recipiente_y.id = 'recipiente_y';
                 recipiente_y.style.width = '150px';
-                recipiente_y.style.border = '2px solid gray';
+                recipiente_y.style.border = '3px solid #000000';
                 recipiente_y.style.borderTop = 'none';
                 recipiente_y.style.height = `${capacidade_maxima_y_px}px`
 
@@ -125,7 +135,7 @@
                         li.innerText = `${i + 1}. ${acao} - Estado Atual: ${estado_atual}`;
                         passosElement.appendChild(li);
 
-                    }, 5000 * (i + 1), acoes[i].acao, acoes[i].estado_atual, capacidade_maxima, i);  // Atraso crescente para cada passo
+                    }, 1500 * (i + 1), acoes[i].acao, acoes[i].estado_atual, capacidade_maxima, i);  // Atraso crescente para cada passo
                 };
             } else {
                 document.getElementById('solucao').innerText = 'Erro ao obter a solução';
