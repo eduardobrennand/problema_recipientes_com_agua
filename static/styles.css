@@ -1,3 +1,89 @@
+body {
+    background-color: #566573;
+    color: #ecf0f1;
+    font-family: monospace;
+    font-size: x-large;
+}
+
+.container-geral {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.container-problema {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    grid-column-gap: 30px;
+    grid-row-gap: 30px;
+}
+
+.container-formulario {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #ecf0f1;
+    grid-area: 1 / 2 / 3 / 3;
+    justify-content: center;
+    align-items: center;
+}
+
+.formulario {
+    border: 1px solid #ecf0f1;
+    padding: 30px;
+}
+
+.container-input {
+    margin: 20px;
+}
+
+.container-submit {
+    text-align: center;
+}
+
+.input-problema {
+    font-family: monospace;
+    width: 30px;
+    padding: 15px;
+    background-color: #566573;
+    border: 0.5px solid #ecf0f1;
+    color: #ecf0f1;
+    font-size: x-large;
+    text-align: center;
+}
+
+.input-problema:hover {
+    background-color: #b3b6b7;
+}
+
+.input-submit {
+    font-family: monospace;
+    padding: 10px;
+    font-weight: bold;
+    border: none;
+}
+
+.input-submit:hover {
+    background-color: #b3b6b7;
+    color: #ecf0f1;
+    border: none;
+}
+
+.container-definicao-problema-busca-informada {
+    border: 1px solid #ecf0f1;
+    max-width: 800px;
+    padding: 20px;
+    grid-area: 2 / 1 / 3 / 2;
+}
+
+.container-definicao-problema-busca-nao-informada {
+    border: 1px solid #ecf0f1;
+    max-width: 800px;
+    padding: 20px;
+    grid-area: 1 / 1 / 2 / 2;
+}
+
 .container-recipientes {
     display: flex;
     align-items: end;

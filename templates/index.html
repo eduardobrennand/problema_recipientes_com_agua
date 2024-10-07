@@ -3,27 +3,63 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Water Jug Problem</title>
+    <title>Problema Jarras de Água</title>
+    <link rel="stylesheet" type="text/css" href="static/styles.css">
     <style>
         button { margin: 10px; padding: 10px; }
         .jug-action { margin: 5px; }
     </style>
 </head>
 <body>
-    <h1>Water Jug Problem</h1>
-    <div>
+    <div class="container-geral">
+        <h1>Problema Jarras de Água</h1>
+        <h3>Eduardo de Lira Brennand - 01023632</h3>
         <h2>Definição do Problema</h2>
-        <form action="processar_problema" type="GET">
-            <label for="capacidade_x">Capacidade do Recipiente X:</label>
-            <input type="number" name="capacidade_x" id="capacidade_x">
-            <label for="capacidade_y">Capacidade do Recipiente Y:</label>
-            <input type="number" name="capacidade_y" id="capacidade_y">
-            <label for="estado_final_x">Estado Final do Recipiente X:</label>
-            <input type="number" name="estado_final_x" id="estado_final_x">
-            <label for="estado_final_y">Estado Final do Recipiente Y:</label>
-            <input type="number" name="estado_final_y" id="estado_final_y">
-            <input type="submit">Processar</input>
-        </form>
+        <div class="container-problema">
+            <div class="container-definicao-problema-busca-nao-informada">
+                <h4>Problema 1 - Busca Não Informada:</h4>
+                <p>- Recipientes com Água (4, 3) – versão 2:</p>
+                <p>Sejam 2 recipientes com capacidades iguais a 4 e 3 litros e uma torneira de
+                    água. Sabendo-se que os recipientes estão inicialmente vazios e que é possível
+                    enchê-los na torneira, ou esvaziá-los passando a água de um para o outro ou
+                    derramando-a no chão, o problema consiste em obter 2 litros de água no
+                    recipiente de 3 litros.</p>
+            </div>
+            <div class="container-definicao-problema-busca-informada">
+                <h4>Problema 2 - Busca Informada:</h4>
+                <p>- Recipientes com Água (4, 3) – versão 2:</p>
+                <p>Recipientes com Água (9, 4) - versão 2:</p>
+                <p>Sejam 2 recipientes com capacidades iguais a 9 e 4 litros e uma torneira de
+                    água. Sabendo-se que os recipientes estão inicialmente vazios e que é possível
+                    enchê-los na torneira, ou esvaziá-los passando a água de um para o outro ou
+                    derramando-a no chão, o problema consiste em obter 7 litros de água no
+                    recipiente de 9 litros.</p>
+            </div>
+            <div class="container-formulario">
+                <h3>Insira as informações do problema:</h3>
+                <form class="formulario" action="processar_problema" type="GET">
+                    <div class="container-input">
+                        <label for="capacidade_x">Capacidade do Recipiente X:</label>
+                        <input class="input-problema" name="capacidade_x" id="capacidade_x">
+                    </div>
+                    <div class="container-input">
+                        <label for="capacidade_y">Capacidade do Recipiente Y:</label>
+                        <input class="input-problema" name="capacidade_y" id="capacidade_y">
+                    </div>
+                    <div class="container-input">
+                        <label for="estado_final_x">Estado Final do Recipiente X:</label>
+                        <input class="input-problema" name="estado_final_x" id="estado_final_x">
+                    </div>
+                    <div class="container-input">
+                        <label for="estado_final_y">Estado Final do Recipiente Y:</label>
+                        <input class="input-problema" name="estado_final_y" id="estado_final_y">
+                    </div>
+                    <div class="container-submit">
+                        <input class="input-submit" type="submit" value="Processar"/>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
     <script>
         async function solve(capacidade_x, capacidade_y, estado_final_x, estado_final_y) {
